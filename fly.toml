@@ -1,0 +1,30 @@
+app = "rezaplus48-service-app48"
+primary_region = "mad"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+
+[services]
+  internal_port = 8080
+  protocol = "tcp"
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[services.ports]]
+  handlers = ["http"]
+  port = 80
+
+[[services.ports]]
+  handlers = ["http", "tls"]
+  port = 443
+
+[vm]
+  memory = "2gb"
+  cpu_kind = "shared"
+  cpus = 1
