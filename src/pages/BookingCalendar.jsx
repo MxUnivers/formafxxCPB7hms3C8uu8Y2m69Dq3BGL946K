@@ -84,26 +84,26 @@ const BookingCalendar = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container px-4 py-8 mx-auto">
         <div className="max-w-6xl mx-auto">
           <div className="mb-6">
-            <Link to={`/formations/${id}`} className="inline-flex items-center text-primary hover:underline mb-4">
-              <ArrowLeft className="h-4 w-4 mr-2" />
+            <Link to={`/formations/${id}`} className="inline-flex items-center mb-4 text-primary hover:underline">
+              <ArrowLeft className="w-4 h-4 mr-2" />
               Retour aux détails
             </Link>
-            <h1 className="text-3xl font-bold mb-2">Réserver une session</h1>
+            <h1 className="mb-2 text-3xl font-bold">Réserver une session</h1>
             <p className="text-muted-foreground">
               Choisissez la date et l'heure qui vous conviennent pour {formation.title}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             {/* Calendrier */}
             <div className="lg:col-span-1">
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
-                    <CalendarIcon className="h-5 w-5 mr-2" />
+                    <CalendarIcon className="w-5 h-5 mr-2" />
                     Sélectionner une date
                   </CardTitle>
                   <CardDescription>
@@ -115,7 +115,7 @@ const BookingCalendar = () => {
                     mode="single"
                     selected={selectedDate}
                     onSelect={setSelectedDate}
-                    className="rounded-md border-0"
+                    className="border-0 rounded-md"
                     modifiers={{
                       available: availableDates
                     }}
@@ -158,17 +158,17 @@ const BookingCalendar = () => {
                             onClick={() => setSelectedSession(session.id)}
                           >
                             <CardContent className="p-4">
-                              <div className="flex justify-between items-start mb-3">
+                              <div className="flex items-start justify-between mb-3">
                                 <div className="space-y-1">
                                   <div className="flex items-center space-x-2">
-                                    <Clock className="h-4 w-4 text-muted-foreground" />
+                                    <Clock className="w-4 h-4 text-muted-foreground" />
                                     <span className="font-medium">{session.time}</span>
                                   </div>
                                   <div className="flex items-center space-x-2">
                                     {session.type === "Présentiel" ? (
-                                      <MapPin className="h-4 w-4 text-muted-foreground" />
+                                      <MapPin className="w-4 h-4 text-muted-foreground" />
                                     ) : (
-                                      <Video className="h-4 w-4 text-muted-foreground" />
+                                      <Video className="w-4 h-4 text-muted-foreground" />
                                     )}
                                     <span className="text-sm text-muted-foreground">
                                       {session.location}
@@ -176,7 +176,7 @@ const BookingCalendar = () => {
                                   </div>
                                 </div>
                                 <div className="text-right">
-                                  <div className="font-bold text-lg text-primary">
+                                  <div className="text-lg font-bold text-primary">
                                     {session.price}
                                   </div>
                                   <Badge 
@@ -190,7 +190,7 @@ const BookingCalendar = () => {
                               
                               <div className="flex items-center justify-between">
                                 <div className="flex items-center space-x-2">
-                                  <Users className="h-4 w-4 text-muted-foreground" />
+                                  <Users className="w-4 h-4 text-muted-foreground" />
                                   <span className="text-sm">
                                     {session.spots} places disponibles sur {session.maxSpots}
                                   </span>
@@ -211,16 +211,16 @@ const BookingCalendar = () => {
                           </Card>
                         ))
                       ) : (
-                        <div className="text-center py-8 text-muted-foreground">
-                          <CalendarIcon className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                        <div className="py-8 text-center text-muted-foreground">
+                          <CalendarIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
                           <p>Aucune session disponible pour cette date</p>
                           <p className="text-sm">Sélectionnez une autre date ou contactez-nous</p>
                         </div>
                       )}
                     </div>
                   ) : (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <CalendarIcon className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <div className="py-8 text-center text-muted-foreground">
+                      <CalendarIcon className="w-12 h-12 mx-auto mb-4 opacity-50" />
                       <p>Sélectionnez une date dans le calendrier</p>
                       <p className="text-sm">pour voir les sessions disponibles</p>
                     </div>
@@ -230,7 +230,7 @@ const BookingCalendar = () => {
 
               {/* Actions */}
               {selectedSession && (
-                <div className="mt-6 flex justify-between items-center">
+                <div className="flex items-center justify-between mt-6">
                   <div className="text-sm text-muted-foreground">
                     Session sélectionnée: {sessions.find(s => s.id === selectedSession)?.date} - {sessions.find(s => s.id === selectedSession)?.time}
                   </div>
@@ -250,7 +250,7 @@ const BookingCalendar = () => {
           </div>
 
           {/* Informations complémentaires */}
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 mt-8 md:grid-cols-2">
             <Card>
               <CardHeader>
                 <CardTitle>Informations pratiques</CardTitle>
@@ -279,7 +279,7 @@ const BookingCalendar = () => {
               <CardHeader>
                 <CardTitle>Conditions d'annulation</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm space-y-2">
+              <CardContent className="space-y-2 text-sm">
                 <p>• Annulation gratuite jusqu'à 15 jours avant</p>
                 <p>• 50% de remboursement entre 15 et 7 jours</p>
                 <p>• Report possible jusqu'à 48h avant</p>
