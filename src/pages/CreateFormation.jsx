@@ -40,7 +40,7 @@ const CreateFormation = () => {
   // const addPrerequisite = () => {
   //   setFormData({...formData, prerequisites: [...formData.prerequisites, ""]});
   // };
-
+  
   // const removePrerequisite = (index) => {
   //   const newPrerequisites = formData.prerequisites.filter((_, i) => i !== index);
   //   setFormData({...formData, prerequisites: newPrerequisites});
@@ -75,10 +75,10 @@ const CreateFormation = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <div className="container mx-auto px-4 py-8">
+      <div className="container px-4 py-8 mx-auto">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">Créer une nouvelle formation</h1>
+            <h1 className="mb-2 text-3xl font-bold">Créer une nouvelle formation</h1>
             <p className="text-muted-foreground">
               Remplissez les informations pour créer votre formation
             </p>
@@ -94,7 +94,7 @@ const CreateFormation = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="title">Titre de la formation</Label>
                     <Input
@@ -135,7 +135,7 @@ const CreateFormation = () => {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                   <div className="space-y-2">
                     <Label htmlFor="duration">Durée (heures)</Label>
                     <Input
@@ -213,12 +213,12 @@ const CreateFormation = () => {
                       onClick={() => removeObjective(index)}
                       disabled={formData.objectives.length === 1}
                     >
-                      <X className="h-4 w-4" />
+                      <X className="w-4 h-4" />
                     </Button>
                   </div>
                 ))}
                 <Button type="button" variant="outline" onClick={addObjective}>
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="w-4 h-4 mr-2" />
                   Ajouter un objectif
                 </Button>
               </CardContent>
@@ -247,7 +247,7 @@ const CreateFormation = () => {
                 <div className="flex flex-wrap gap-2">
                   {formData.tags.map((tag, index) => (
                     <Badge key={index} variant="secondary" className="cursor-pointer" onClick={() => removeTag(tag)}>
-                      {tag} <X className="h-3 w-3 ml-1" />
+                      {tag} <X className="w-3 h-3 ml-1" />
                     </Badge>
                   ))}
                 </div>
@@ -264,8 +264,8 @@ const CreateFormation = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 {modules.map((module, index) => (
-                  <div key={index} className="border rounded-lg p-4 space-y-4">
-                    <div className="flex justify-between items-center">
+                  <div key={index} className="p-4 space-y-4 border rounded-lg">
+                    <div className="flex items-center justify-between">
                       <h4 className="font-medium">Module {index + 1}</h4>
                       <Button
                         type="button"
@@ -277,7 +277,7 @@ const CreateFormation = () => {
                         Supprimer
                       </Button>
                     </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                       <Input
                         placeholder="Titre du module"
                         value={module.title}
@@ -310,7 +310,7 @@ const CreateFormation = () => {
                   </div>
                 ))}
                 <Button type="button" variant="outline" onClick={addModule}>
-                  <Plus className="h-4 w-4 mr-2" />
+                  <Plus className="w-4 h-4 mr-2" />
                   Ajouter un module
                 </Button>
               </CardContent>
