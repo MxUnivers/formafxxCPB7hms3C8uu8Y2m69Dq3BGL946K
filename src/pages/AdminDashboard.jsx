@@ -8,6 +8,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Navigation from "@/components/Navigation";
 import { Plus, Edit, Trash2, Users, BookOpen, Calendar, TrendingUp, Eye } from "lucide-react";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 const AdminDashboard = () => {
   const stats = {
@@ -16,6 +18,11 @@ const AdminDashboard = () => {
     totalRevenue: 12450,
     completionRate: 87
   };
+
+
+ useEffect(() => {
+  toast.success("All&")
+ }, [])
 
   const courses = [
     {
@@ -75,7 +82,7 @@ const AdminDashboard = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button>
-          <Plus className="mr-2 h-4 w-4" />
+          <Plus className="w-4 h-4 mr-2" />
           Nouvelle Formation
         </Button>
       </DialogTrigger>
@@ -131,21 +138,21 @@ const AdminDashboard = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
+      <div className="container px-4 py-8 mx-auto">
+        <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Administration</h1>
+            <h1 className="mb-2 text-3xl font-bold">Administration</h1>
             <p className="text-muted-foreground">Gérez vos formations et suivez les performances</p>
           </div>
           <AddCourseDialog />
         </div>
 
         {/* Stats Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 gap-6 mb-8 md:grid-cols-4">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium">Étudiants totaux</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <Users className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.totalStudents}</div>
@@ -154,9 +161,9 @@ const AdminDashboard = () => {
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium">Formations actives</CardTitle>
-              <BookOpen className="h-4 w-4 text-muted-foreground" />
+              <BookOpen className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.activeCourses}</div>
@@ -165,9 +172,9 @@ const AdminDashboard = () => {
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium">Revenus totaux</CardTitle>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              <TrendingUp className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.totalRevenue}€</div>
@@ -176,9 +183,9 @@ const AdminDashboard = () => {
           </Card>
 
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium">Taux de completion</CardTitle>
-              <Calendar className="h-4 w-4 text-muted-foreground" />
+              <Calendar className="w-4 h-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.completionRate}%</div>
@@ -187,17 +194,17 @@ const AdminDashboard = () => {
           </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Courses Management */}
           <div className="lg:col-span-2">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center justify-between mb-4">
               <h2 className="text-2xl font-bold">Mes Formations</h2>
             </div>
             <div className="space-y-4">
               {courses.map((course) => (
                 <Card key={course.id}>
                   <CardHeader>
-                    <div className="flex justify-between items-start">
+                    <div className="flex items-start justify-between">
                       <div>
                         <CardTitle className="text-lg">{course.title}</CardTitle>
                         <CardDescription>
@@ -206,15 +213,15 @@ const AdminDashboard = () => {
                       </div>
                       <div className="flex space-x-2">
                         <Button size="sm" variant="outline">
-                          <Eye className="h-4 w-4 mr-1" />
+                          <Eye className="w-4 h-4 mr-1" />
                           Voir
                         </Button>
                         <Button size="sm" variant="outline">
-                          <Edit className="h-4 w-4 mr-1" />
+                          <Edit className="w-4 h-4 mr-1" />
                           Modifier
                         </Button>
                         <Button size="sm" variant="outline">
-                          <Trash2 className="h-4 w-4 mr-1" />
+                          <Trash2 className="w-4 h-4 mr-1" />
                           Supprimer
                         </Button>
                       </div>
@@ -246,15 +253,15 @@ const AdminDashboard = () => {
 
           {/* Recent Students */}
           <div>
-            <h2 className="text-2xl font-bold mb-4">Étudiants récents</h2>
+            <h2 className="mb-4 text-2xl font-bold">Étudiants récents</h2>
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Inscriptions récentes</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {recentStudents.map((student, index) => (
-                  <div key={index} className="border-b border-border pb-3 last:border-b-0">
-                    <div className="flex justify-between items-start">
+                  <div key={index} className="pb-3 border-b border-border last:border-b-0">
+                    <div className="flex items-start justify-between">
                       <div>
                         <p className="font-medium">{student.name}</p>
                         <p className="text-sm text-muted-foreground">{student.email}</p>
@@ -266,14 +273,14 @@ const AdminDashboard = () => {
                         <span>Progression</span>
                         <span>{student.progress}%</span>
                       </div>
-                      <div className="w-full bg-muted rounded-full h-2 mt-1">
+                      <div className="w-full h-2 mt-1 rounded-full bg-muted">
                         <div 
-                          className="bg-primary h-2 rounded-full" 
+                          className="h-2 rounded-full bg-primary" 
                           style={{ width: `${student.progress}%` }}
                         />
                       </div>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="mt-1 text-xs text-muted-foreground">
                       Inscrit le {new Date(student.enrolledDate).toLocaleDateString('fr-FR')}
                     </p>
                   </div>
@@ -287,16 +294,16 @@ const AdminDashboard = () => {
                 <CardTitle className="text-lg">Actions rapides</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full justify-start">
-                  <Plus className="mr-2 h-4 w-4" />
+                <Button variant="outline" className="justify-start w-full">
+                  <Plus className="w-4 h-4 mr-2" />
                   Ajouter un exercice
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Calendar className="mr-2 h-4 w-4" />
+                <Button variant="outline" className="justify-start w-full">
+                  <Calendar className="w-4 h-4 mr-2" />
                   Planifier une session
                 </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <Users className="mr-2 h-4 w-4" />
+                <Button variant="outline" className="justify-start w-full">
+                  <Users className="w-4 h-4 mr-2" />
                   Voir tous les étudiants
                 </Button>
               </CardContent>

@@ -5,34 +5,47 @@ import { getAndCheckLocalStorage } from "../../utils/storage/localvalueFuction";
 import { localStorageData, localStorageKeys } from "../../utils/storage/localvalue";
 import { profileRoleType } from "../../utils/dataApi/dataFormApi";
 import { getDataFromFile } from "../DataLocal";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 
-// Récupérer tous les codes promo
-export function fetchUsersAll() {
+
+
+
+export function UserCreate(data) {
     return async (dispatch) => {
-        const contactsAll = getDataFromFile(localStorageData.UserAll) || [];
-        dispatch({ type: FETCH_USERS_SUCCESS, payload: contactsAll })
-        dispatch({ type: FETCH_USERS_SUCCESS_2, payload: contactsAll })
-        dispatch({ type: FETCH_USERS_REQUEST });
-        await axios.get(`${baseurl.url}/api/v1/contacts/get_contacts`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${baseurl.TypeToken} ${baseurl.token}`
-            }
-        }).then((response) => {
+        dispatch({ type: FETCH_USER_REQUEST });
+        await axios.get(`${baseurl.url}/api/v1/users/register`,data,).then((response) => {
             //console.log(response.data.data);
-            dispatch({ type: FETCH_USERS_SUCCESS, payload: response.data.data });
-            dispatch({ type: FETCH_USERS_SUCCESS_2, payload: response.data.data });
-        }).catch((error) => {
-            //console.log(error);
-            dispatch({ type: FETCH_USERS_FAILURE, payload: error.message });
-        });
+            dispatch({ type: FETCH_USER_SUCCESS, payload: response.data.data });
+            toast.success(response?.data?.message|| "Compté créer avec succès")
+            
+        })
+            .catch((error) => {
+                dispatch({ type: FETCH_USER_FAILURE, payload: error.message })
+            toast.error(response?.data?.message|| "Création de compte non réussi")
+
+                //console.log(error);
+            });
     }
 }
 
+export function UserLoing(data) {
+    return async (dispatch) => {
+        dispatch({ type: FETCH_USER_REQUEST });
+        await axios.get(`${baseurl.url}/api/v1/users/login`,data,).then((response) => {
+            //console.log(response.data.data);
+            dispatch({ type: FETCH_USER_SUCCESS, payload: response.data.data });
+            toast.success(response?.data?.message|| "Connexion réussi avec succès")
+            
+        })
+            .catch((error) => {
+                dispatch({ type: FETCH_USER_FAILURE, payload: error.message })
+            toast.error(response?.data?.message|| "Impossible de se connecter")
 
-
+                //console.log(error);
+            });
+    }
+}
 
 
 
@@ -40,7 +53,7 @@ export function fetchUsersAll() {
 export function fetchUserById(idUser) {
     return async (dispatch) => {
         dispatch({ type: FETCH_USER_REQUEST });
-        await axios.get(`${baseurl.url}/api/v1/contacts/get_contact/${idUser}`, {
+        await axios.get(`${baseurl.url}/api/v1/users/get_contact/${idUser}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `${baseurl.TypeToken} ${baseurl.token}`
@@ -59,13 +72,56 @@ export function fetchUserById(idUser) {
 
 
 
+// Action pour récupérer les utilisateurs avec filtres
+export function fetchUsers(filters = {
+    search,startDate,endDate,lastLoginStart, lastLoginEnd
+}) {
+    return async (dispatch) => {
+        dispatch({ type: FETCH_USERS_REQUEST });
+
+        try {
+            // Construire les query params dynamiquement
+            const params = new URLSearchParams();
+
+            // Ajouter uniquement les filtres définis
+            if (filters.search) params.append('search', filters.search);
+            if (filters.startDate) params.append('startDate', filters.startDate);
+            if (filters.endDate) params.append('endDate', filters.endDate);
+            if (filters.lastLoginStart) params.append('lastLoginStart', filters.lastLoginStart);
+            if (filters.lastLoginEnd) params.append('lastLoginEnd', filters.lastLoginEnd);
+
+            // URL avec query string
+            const url = `${baseurl.url}/api/v1/users/get_users${params.toString() ? '?' + params.toString() : ''}`;
+
+            const response = await axios.get(url, {
+                headers: {
+                    'Authorization': `${baseurl.TypeToken} ${baseurl.token}`,
+                },
+            });
+
+            dispatch({
+                type: FETCH_USERS_SUCCESS,
+                payload: response.data.data,
+            });
+        } catch (error) {
+            dispatch({
+                type: FETCH_USERS_FAILURE,
+                payload: error.message || 'Erreur lors du chargement des utilisateurs',
+            });
+        }
+    };
+}
+
+
+
+
 
 
 // Créer un nouveua message 
 export function createUser(data) {
     return async (dispatch) => {
         dispatch({ type: FETCH_USER_REQUEST });
-        await axios.post(`${baseurl.url}/api/v1/contacts/add`, data, {
+        await axios.post(`${baseurl.url}/api/v1/users/add`, data, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `${baseurl.TypeToken} ${baseurl.token}`
