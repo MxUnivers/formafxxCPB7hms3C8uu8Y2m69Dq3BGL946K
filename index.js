@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 // Limiter les requêtes pour éviter les attaques DoS
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 100, // Limite à 100 requêtes
+  max: 3000, // Limite à 100 requêtes
 });
 
 app.use(limiter);
