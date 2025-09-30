@@ -21,7 +21,6 @@ const AdminDashboard = () => {
 
 
  useEffect(() => {
-  toast.success("All&")
  }, [])
 
   const courses = [
