@@ -1,7 +1,9 @@
 // controllers/formationController.js
 
+const Exercise = require('../models/ExerciseModel');
 const Formation = require('../models/FormationModel');
 const Module = require('../models/ModuleModel');
+const Lesson = require('../models/LessonModel');
 const User = require('../models/UserModel');
 const { body, validationResult } = require('express-validator');
 
@@ -14,9 +16,23 @@ exports.createFormation = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { title, description, category, level, duration, price, technologies, instructor } = req.body;
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
+    const {
+      title,
+      description,
+      category,
+      level,
+      duration,
+      price,
+      technologies,
+      instructor,
+      modules // Nouveau : modules avec leçons et exercices
+    } = req.body;
+
+    // 1. Créer la formation
     const formation = new Formation({
       title,
       description,
@@ -28,10 +44,78 @@ exports.createFormation = async (req, res) => {
       instructor,
     });
 
-    await formation.save();
-    res.status(201).json(formation);
+    await formation.save({ session });
+
+    // 2. Traiter chaque module
+    if (modules && Array.isArray(modules)) {
+      for (const mod of modules) {
+        const moduleDoc = new Module({
+          title: mod.title,
+          description: mod.description,
+          isPaid: mod.isPaid || false,
+          order: mod.order,
+          formation: formation._id,
+        });
+
+        await moduleDoc.save({ session });
+
+        // 3. Traiter chaque leçon du module
+        if (mod.lessons && Array.isArray(mod.lessons)) {
+          for (const lesson of mod.lessons) {
+            const lessonDoc = new Lesson({
+              title: lesson.title,
+              description: lesson.description,
+              videos: lesson.videos || [],
+              images: lesson.images || [],
+              duration: lesson.duration,
+              order: lesson.order,
+              module: moduleDoc._id,
+            });
+
+            await lessonDoc.save({ session });
+
+            // 4. Traiter chaque exercice de la leçon
+            if (lesson.exercises && Array.isArray(lesson.exercises)) {
+              for (const ex of lesson.exercises) {
+                const exerciseDoc = new ExerciseModel({
+                  title: ex.title,
+                  description: ex.description,
+                  type: ex.type,
+                  steps: ex.steps,
+                  solution: ex.solution,
+                  difficulty: ex.difficulty,
+                  estimatedTime: ex.estimatedTime,
+                  isActive: ex.isActive !== undefined ? ex.isActive : true,
+                  lesson: lessonDoc._id,
+                  module: moduleDoc._id,
+                  formation: formation._id,
+                });
+
+                await exerciseDoc.save({ session });
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // Valider la transaction
+    await session.commitTransaction();
+    session.endSession();
+
+    // Répondre avec la formation complète
+    res.status(201).json({
+      message: 'Formation créée avec succès',
+      formation: {
+        _id: formation._id,
+        title: formation.title,
+        modulesCount: modules?.length || 0,
+      },
+    });
   } catch (err) {
-    console.error(err.message);
+    await session.abortTransaction();
+    session.endSession();
+    console.error('Erreur lors de la création de la formation:', err.message);
     res.status(500).json({ message: 'Erreur serveur' });
   }
 };

@@ -8,3 +8,6 @@ const ModuleSchema = new mongoose.Schema({
   formation: { type: mongoose.Schema.Types.ObjectId, ref: 'Formation', required: true },
   order: { type: Number }, // Ordre dans la formation
 });
+
+const  Module = mongoose.model('Module', ModuleSchema);
+module.exports = Module;
