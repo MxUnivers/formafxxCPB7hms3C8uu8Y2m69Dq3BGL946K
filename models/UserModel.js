@@ -9,7 +9,7 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true }, // Hashé (bcrypt)
   phone: { type: String },
-  profilePicture: { type: String }, // URL de l'image
+  profilePicture: { type: String, default:"https://img.freepik.com/vecteurs-premium/gens_352279-247.jpg" }, // URL de l'image
   bio: { type: String, maxlength: 500 },
 
   // Rôle dans la plateforme

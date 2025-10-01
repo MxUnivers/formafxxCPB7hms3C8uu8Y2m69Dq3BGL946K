@@ -23,14 +23,17 @@ const connectDB = async () => {
 };
 
 
+// Utilisateurs par défaut
 const DEFAULT_USERS = [
   {
     firstName: 'Super',
     lastName: 'Admin',
     email: 'admin@plateforme.com',
-    password: 'admin123', // À changer en production
+    password: 'admin123',
     role: 'SuperAdmin',
     phone: '+228 90 00 00 00',
+    isVerified: true,
+    profilePicture: 'https://img.freepik.com/vecteurs-premium/gens_352279-247.jpg',
   },
   {
     firstName: 'Support',
@@ -39,6 +42,8 @@ const DEFAULT_USERS = [
     password: 'support123',
     role: 'Support',
     phone: '+228 90 00 00 01',
+    isVerified: true,
+    profilePicture: 'https://img.freepik.com/vecteurs-premium/gens_352279-247.jpg',
   },
   {
     firstName: 'John',
@@ -47,11 +52,26 @@ const DEFAULT_USERS = [
     password: 'instructor123',
     role: 'Instructor',
     phone: '+228 90 00 00 02',
+    isVerified: true,
+    profilePicture: 'https://img.freepik.com/vecteurs-premium/gens_352279-247.jpg',
     instructor: {
       expertise: 'Développement Web Fullstack',
     },
   },
+  // 👨‍🎓 Nouvel utilisateur : Étudiant par défaut
+  {
+    firstName: 'Jean',
+    lastName: 'Dupont',
+    email: 'student@plateforme.com',
+    password: 'student123',
+    role: 'Student',
+    phone: '+228 90 00 00 03',
+    isVerified: true,
+    profilePicture: 'https://img.freepik.com/vecteurs-premium/gens_352279-247.jpg',
+    bio: 'Étudiant motivé en développement web.',
+  },
 ];
+
 
 async function initializeDefaultUsers() {
   for (const userData of DEFAULT_USERS) {

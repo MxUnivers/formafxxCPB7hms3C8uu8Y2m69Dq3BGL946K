@@ -14,7 +14,7 @@ exports.register = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { firstName, lastName, email, password, phone, bio, role } = req.body;
+  const { firstName, lastName, email, password, phone, bio, role , profilePicture } = req.body;
 
   try {
     // Vérifier si l'utilisateur existe déjà
@@ -29,6 +29,7 @@ exports.register = async (req, res) => {
       lastName,
       email,
       password,
+      profilePicture:profilePicture,
       phone,
       bio,
       role: role||'Student', // Par défaut
@@ -96,20 +97,21 @@ exports.login = async (req, res) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET || 'secretkey', { expiresIn: '7d' });
 
     res.json({
+      message:"Authentification réussi avec succès",
       token,
       data:user,
-      user: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        role: user.role,
-        profilePicture: user.profilePicture,
-        theme: user.theme,
-      },
+      // user: {
+      //   id: user._id,
+      //   firstName: user.firstName,
+      //   lastName: user.lastName,
+      //   email: user.email,
+      //   role: user.role,
+      //   profilePicture: user.profilePicture,
+      //   theme: user.theme,
+      // },
     });
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ message: 'Erreur serveur' });
+    res.status(500).json({ message: 'Authentification échoué' });
   }
 };
