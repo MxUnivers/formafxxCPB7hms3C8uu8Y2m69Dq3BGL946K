@@ -16,35 +16,24 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Payment from "./pages/Payment";
 import NotFound from "./pages/NotFound";
+import { Provider } from "react-redux";
+import store from "./app/store";
+import AppRoutes from "./AppRoutes";
 
 const queryClient = new QueryClient();
 
 const App = () => (
+  <Provider store={store}>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/formations" element={<Formations />} />
-          <Route path="/formations/:id" element={<FormationDetail />} />
-          <Route path="/formations/:id/enroll" element={<FormationEnrollment />} />
-          <Route path="/formations/:id/book" element={<BookingCalendar />} />
-          <Route path="/formations/:id/payment" element={<Payment />} />
-          <Route path="/admin/formations/create" element={<CreateFormation />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/student" element={<StudentDashboard />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/payment" element={<Payment />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-           <Route path="*" element={<NotFound />} /> 
-        </Routes>
+        <AppRoutes/>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
+  </Provider>
 );
 
 export default App;

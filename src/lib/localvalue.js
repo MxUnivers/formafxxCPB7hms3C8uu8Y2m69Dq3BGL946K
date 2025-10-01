@@ -37,3 +37,10 @@ export const localStorageData = {
     UserProgressAll:"",
     UserProgressAllOfUser:"",
 }
+
+export const  profileRoleType ={
+    ADMIN:"SuperAdmin",
+    SUPPORT:"Support",
+    INSTRUCTOR:"Instructor",
+    STUDENT:"Student",
+}

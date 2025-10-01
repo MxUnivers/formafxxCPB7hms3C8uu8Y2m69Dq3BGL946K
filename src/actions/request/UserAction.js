@@ -1,11 +1,9 @@
 import axios from "axios";
-import { FETCH_USERS_FAILURE, FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS, FETCH_USERS_SUCCESS_2, FETCH_USER_FAILURE, FETCH_USER_REQUEST, FETCH_USER_SUCCESS } from "../../app/actions/actions";
-import { baseurl } from "../../utils/url/baseurl";
-import { getAndCheckLocalStorage } from "../../utils/storage/localvalueFuction";
-import { localStorageData, localStorageKeys } from "../../utils/storage/localvalue";
-import { profileRoleType } from "../../utils/dataApi/dataFormApi";
-import { getDataFromFile } from "../DataLocal";
 import { toast } from "sonner";
+import { baseurl } from "../../lib/baseurl";
+import { dureeDeVie, getAndCheckLocalStorage, setWithExpiration } from "../../lib/localvalueFunction";
+import { localStorageKeys, profileRoleType } from "../../lib/localvalue";
+import { FETCH_USER_FAILURE, FETCH_USER_REQUEST, FETCH_USER_SUCCESS, FETCH_USERS_FAILURE, FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS } from "../../app/actions/actions";
 
 
 
@@ -14,7 +12,7 @@ import { toast } from "sonner";
 export function UserCreate(data) {
     return async (dispatch) => {
         dispatch({ type: FETCH_USER_REQUEST });
-        await axios.get(`${baseurl.url}/api/v1/users/register`,data,).then((response) => {
+        await axios.pist(`${baseurl.url}/api/v1/users/register`,data,).then((response) => {
             //console.log(response.data.data);
             dispatch({ type: FETCH_USER_SUCCESS, payload: response.data.data });
             toast.success(response?.data?.message|| "Compté créer avec succès")
@@ -32,15 +30,16 @@ export function UserCreate(data) {
 export function UserLoing(data) {
     return async (dispatch) => {
         dispatch({ type: FETCH_USER_REQUEST });
-        await axios.get(`${baseurl.url}/api/v1/users/login`,data,).then((response) => {
+        await axios.post(`${baseurl.url}/api/v1/auth/login`,data,).then((response) => {
             //console.log(response.data.data);
             dispatch({ type: FETCH_USER_SUCCESS, payload: response.data.data });
-            toast.success(response?.data?.message|| "Connexion réussi avec succès")
-            
+            toast.success(response?.data?.message|| "Connexion réussi avec succès", { position: "bottom-right" });
+            setWithExpiration(localStorageKeys.userId,response?.data?.data?._id,dureeDeVie);
+            setWithExpiration(localStorageKeys.profileRole,response?.data?.data?.role,dureeDeVie);
         })
             .catch((error) => {
-                dispatch({ type: FETCH_USER_FAILURE, payload: error.message })
-            toast.error(response?.data?.message|| "Impossible de se connecter")
+                dispatch({ type: FETCH_USER_FAILURE, payload: error.response?.data?.message })
+            toast.error(error.response?.data?.message|| "Impossible de se connecter", { position: "bottom-right" })
 
                 //console.log(error);
             });
@@ -138,8 +137,9 @@ export function createUser(data) {
             dispatch({ type: FETCH_USER_FAILURE, payload: error.message });
             toast.error(error?.response?.data.message || "Message non envoyé", { position: "bottom-right" });
             if (getAndCheckLocalStorage(localStorageKeys.profileRole) == profileRoleType.ADMIN) {
-            } else {
                 fetchUsersAll();
+            } else {
+                // fetchUsersAll();
             }
             //console.log(error);
         });

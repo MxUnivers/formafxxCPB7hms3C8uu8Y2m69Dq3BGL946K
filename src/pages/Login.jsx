@@ -3,11 +3,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { UserLoing } from "../actions/request/UserAction";
 
 const Login = () => {
+  const  navigate =  useNavigate();
+  const {loadingUser} =  useSelector((state)=>state.users);
+  const dispatch =  useDispatch();
+
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -18,13 +24,15 @@ const Login = () => {
     e.preventDefault();
     // Logique de connexion à implémenter
     console.log("Connexion:", formData);
+    dispatch(UserLoing(formData, navigate));
+    
   };
 
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <div className="container mx-auto px-4 py-16 flex items-center justify-center">
+      <div className="container flex items-center justify-center px-4 py-16 mx-auto">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Connexion</CardTitle>
@@ -62,19 +70,28 @@ const Login = () => {
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                    className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </Button>
                 </div>
               </div>
               
+              {
+                loadingUser ?
+                <Button type="button" className="w-full">
+                ...
+              </Button>
+              :
               <Button type="submit" className="w-full">
                 Se connecter
               </Button>
+
+              }
               
-              <div className="text-center space-y-2">
+              
+              <div className="space-y-2 text-center">
                 <Link to="/forgot-password" className="text-sm text-primary hover:underline">
                   Mot de passe oublié ?
                 </Link>
