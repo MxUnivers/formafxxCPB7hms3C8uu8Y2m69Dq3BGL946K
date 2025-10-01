@@ -2,7 +2,9 @@
 const mongoose =  require("mongoose");
 
 const LessonSchema = new mongoose.Schema({
+  
   title: { type: String, required: true },
+  image: { type: String, required: false },
   description: { type: String },
   videos: [{ type: String }], // URLs des vidéos
   images: [{ type: String }], // URLs des images illustratives
@@ -10,3 +12,8 @@ const LessonSchema = new mongoose.Schema({
   order: { type: Number }, // Ordre dans le module
   module: { type: mongoose.Schema.Types.ObjectId, ref: 'Module', required: true }, // Référence au module
 });
+
+
+const  Lesson = mongoose.model('Lesson', LessonSchema);
+
+module.exports = Lesson;

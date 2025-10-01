@@ -1,11 +1,12 @@
 // controllers/formationController.js
 
-const Exercise = require('../models/ExerciseModel');
 const Formation = require('../models/FormationModel');
 const Module = require('../models/ModuleModel');
 const Lesson = require('../models/LessonModel');
 const User = require('../models/UserModel');
 const { body, validationResult } = require('express-validator');
+const { default: mongoose } = require('mongoose');
+const ExerciseModel = require('../models/ExerciseModel');
 
 // @route   POST /api/formations
 // @desc    Créer une nouvelle formation (Admin uniquement)
@@ -22,6 +23,7 @@ exports.createFormation = async (req, res) => {
   try {
     const {
       title,
+      image,
       description,
       category,
       level,
@@ -35,6 +37,7 @@ exports.createFormation = async (req, res) => {
     // 1. Créer la formation
     const formation = new Formation({
       title,
+      image,
       description,
       category,
       level,
