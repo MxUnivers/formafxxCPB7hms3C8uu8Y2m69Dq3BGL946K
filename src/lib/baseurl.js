@@ -1,8 +1,10 @@
+import { localStorageKeys } from "./localvalue";
+import { getAndCheckLocalStorage } from "./localvalueFunction";
 
 
 export const baseurl = {
     url: import.meta.env.VITE_BASE_URL,
-    token: import.meta.env.VITE_TOKEN,
+    token: getAndCheckLocalStorage(localStorageKeys.userToken) || import.meta.env.VITE_TOKEN,
     TypeToken: import.meta.env.VITE_TYPE_TOKEN,
     cloudinaryUploadPreset: import.meta.env.VITE_CLOUNDIANRY_UPLOAD_PRESET,
     cloudinaryCloudName: import.meta.env.VITE_CLOUNDIANRY_NAME,

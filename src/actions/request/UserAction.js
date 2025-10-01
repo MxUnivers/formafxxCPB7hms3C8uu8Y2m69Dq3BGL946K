@@ -4,6 +4,7 @@ import { baseurl } from "../../lib/baseurl";
 import { dureeDeVie, getAndCheckLocalStorage, setWithExpiration } from "../../lib/localvalueFunction";
 import { localStorageKeys, profileRoleType } from "../../lib/localvalue";
 import { FETCH_USER_FAILURE, FETCH_USER_REQUEST, FETCH_USER_SUCCESS, FETCH_USERS_FAILURE, FETCH_USERS_REQUEST, FETCH_USERS_SUCCESS } from "../../app/actions/actions";
+import appRoutes from "../../routes/appRoutes";
 
 
 
@@ -27,7 +28,7 @@ export function UserCreate(data) {
     }
 }
 
-export function UserLoing(data) {
+export function UserLoing(data, navigate) {
     return async (dispatch) => {
         dispatch({ type: FETCH_USER_REQUEST });
         await axios.post(`${baseurl.url}/api/v1/auth/login`,data,).then((response) => {
@@ -36,6 +37,8 @@ export function UserLoing(data) {
             toast.success(response?.data?.message|| "Connexion réussi avec succès", { position: "bottom-right" });
             setWithExpiration(localStorageKeys.userId,response?.data?.data?._id,dureeDeVie);
             setWithExpiration(localStorageKeys.profileRole,response?.data?.data?.role,dureeDeVie);
+            setWithExpiration(localStorageKeys.userToken,response?.data?.data?.token,dureeDeVie);
+            navigate(`${appRoutes[10].path}`);
         })
             .catch((error) => {
                 dispatch({ type: FETCH_USER_FAILURE, payload: error.response?.data?.message })

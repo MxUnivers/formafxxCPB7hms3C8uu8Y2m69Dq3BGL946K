@@ -50,32 +50,32 @@ const Index = () => {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative py-20 px-4 overflow-hidden">
+      <section className="relative px-4 py-20 overflow-hidden">
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
+          className="absolute inset-0 bg-center bg-no-repeat bg-cover opacity-20"
           style={{ backgroundImage: `url(${heroImage})` }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10" />
         
-        <div className="container mx-auto text-center relative z-10">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+        <div className="container relative z-10 mx-auto text-center">
+          <h1 className="mb-6 text-5xl font-bold text-transparent md:text-6xl bg-gradient-to-r from-primary to-accent bg-clip-text">
             Formez-vous au Développement
           </h1>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <p className="max-w-2xl mx-auto mb-8 text-xl text-muted-foreground">
             Rejoignez notre plateforme de formation et développez vos compétences en programmation 
             avec des cours pratiques et des exercices adaptés à votre niveau.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Link to="/formations">
               <Button variant="hero" size="lg" className="w-full sm:w-auto">
                 Découvrir les Formations
-                <ArrowRight className="ml-2 h-5 w-5" />
+                <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
             <Link to="/calendar">
               <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                <Calendar className="mr-2 h-5 w-5" />
+                <Calendar className="w-5 h-5 mr-2" />
                 Voir le Calendrier
               </Button>
             </Link>
@@ -84,21 +84,21 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 px-4 bg-card/50">
+      <section className="px-4 py-16 bg-card/50">
         <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Pourquoi Choisir FormationPro ?</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold">Pourquoi Choisir FormationPro ?</h2>
+            <p className="max-w-2xl mx-auto text-lg text-muted-foreground">
               Une plateforme moderne conçue pour optimiser votre apprentissage et votre progression
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
             {features.map((feature, index) => (
-              <Card key={index} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+              <Card key={index} className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                 <CardHeader className="text-center">
-                  <div className="w-12 h-12 mx-auto mb-4 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <feature.icon className="h-6 w-6 text-primary" />
+                  <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-lg bg-primary/10">
+                    <feature.icon className="w-6 h-6 text-primary" />
                   </div>
                   <CardTitle className="text-lg">{feature.title}</CardTitle>
                 </CardHeader>
@@ -114,22 +114,22 @@ const Index = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 px-4">
+      <section className="px-4 py-16">
         <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Ce que disent nos étudiants</h2>
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-3xl font-bold">Ce que disent nos étudiants</h2>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid max-w-4xl grid-cols-1 gap-6 mx-auto md:grid-cols-2">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
+              <Card key={index} className="transition-shadow hover:shadow-lg">
                 <CardContent className="pt-6">
                   <div className="flex mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                     ))}
                   </div>
-                  <p className="text-muted-foreground mb-4 italic">"{testimonial.content}"</p>
+                  <p className="mb-4 italic text-muted-foreground">"{testimonial.content}"</p>
                   <div>
                     <p className="font-semibold">{testimonial.name}</p>
                     <p className="text-sm text-muted-foreground">{testimonial.role}</p>
@@ -142,18 +142,18 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 bg-gradient-to-r from-primary to-accent">
+      <section className="px-4 py-16 bg-gradient-to-r from-primary to-accent">
         <div className="container mx-auto text-center">
-          <h2 className="text-3xl font-bold text-primary-foreground mb-4">
+          <h2 className="mb-4 text-3xl font-bold text-primary-foreground">
             Prêt à commencer votre formation ?
           </h2>
-          <p className="text-primary-foreground/80 text-lg mb-8 max-w-2xl mx-auto">
+          <p className="max-w-2xl mx-auto mb-8 text-lg text-primary-foreground/80">
             Rejoignez des centaines d'étudiants qui ont déjà transformé leur carrière grâce à nos formations
           </p>
           <Link to="/student">
             <Button variant="secondary" size="lg">
               Créer mon compte étudiant
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
         </div>

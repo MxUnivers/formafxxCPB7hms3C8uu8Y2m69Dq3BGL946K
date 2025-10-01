@@ -10,8 +10,18 @@ import Navigation from "@/components/Navigation";
 import { Plus, Edit, Trash2, Users, BookOpen, Calendar, TrendingUp, Eye } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import appRoutes from "../routes/appRoutes";
+import { useNavigate } from "react-router-dom";
+import { isAdmin, isInstructor } from "../lib/authUtils";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFormations } from "../actions/request/FormationAction";
 
 const AdminDashboard = () => {
+
+  const {formations, loadingFormation} =  useSelector((state)=>state.formations)
+  const dispatch  =  useDispatch();
+
+  
   const stats = {
     totalStudents: 142,
     activeCourses: 8,
@@ -19,39 +29,13 @@ const AdminDashboard = () => {
     completionRate: 87
   };
 
+  const navigate =  useNavigate();
+
 
  useEffect(() => {
+  dispatch(fetchFormations());
  }, [])
 
-  const courses = [
-    {
-      id: 1,
-      title: "React & TypeScript Masterclass",
-      students: 45,
-      status: "Actif",
-      price: "299€",
-      createdDate: "2024-01-15",
-      completionRate: 78
-    },
-    {
-      id: 2,
-      title: "Node.js & Express Backend",
-      students: 32,
-      status: "Actif",
-      price: "249€",
-      createdDate: "2024-01-20",
-      completionRate: 65
-    },
-    {
-      id: 3,
-      title: "Python pour Débutants",
-      students: 67,
-      status: "Actif",
-      price: "199€",
-      createdDate: "2024-01-10",
-      completionRate: 92
-    }
-  ];
 
   const recentStudents = [
     {
@@ -80,56 +64,12 @@ const AdminDashboard = () => {
   const AddCourseDialog = () => (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button onClick={()=>{navigate(`${appRoutes[11].path}`)}}>
           <Plus className="w-4 h-4 mr-2" />
           Nouvelle Formation
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>Créer une nouvelle formation</DialogTitle>
-          <DialogDescription>
-            Remplissez les informations ci-dessous pour créer une nouvelle formation.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid gap-2">
-            <Label htmlFor="title">Titre de la formation</Label>
-            <Input id="title" placeholder="Ex: React Avancé..." />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea id="description" placeholder="Description détaillée de la formation..." />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="price">Prix (€)</Label>
-              <Input id="price" type="number" placeholder="299" />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="duration">Durée (heures)</Label>
-              <Input id="duration" type="number" placeholder="40" />
-            </div>
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="level">Niveau</Label>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Sélectionner un niveau" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="beginner">Débutant</SelectItem>
-                <SelectItem value="intermediate">Intermédiaire</SelectItem>
-                <SelectItem value="advanced">Avancé</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-        <div className="flex justify-end space-x-2">
-          <Button variant="outline">Annuler</Button>
-          <Button>Créer la formation</Button>
-        </div>
-      </DialogContent>
+      
     </Dialog>
   );
 
@@ -143,7 +83,11 @@ const AdminDashboard = () => {
             <h1 className="mb-2 text-3xl font-bold">Administration</h1>
             <p className="text-muted-foreground">Gérez vos formations et suivez les performances</p>
           </div>
+          {
+          (isAdmin || isInstructor) &&
           <AddCourseDialog />
+          }
+          
         </div>
 
         {/* Stats Overview */}
@@ -200,14 +144,14 @@ const AdminDashboard = () => {
               <h2 className="text-2xl font-bold">Mes Formations</h2>
             </div>
             <div className="space-y-4">
-              {courses.map((course) => (
+              {formations && formations.length > 0 && formations.map((course) => (
                 <Card key={course.id}>
                   <CardHeader>
                     <div className="flex items-start justify-between">
                       <div>
                         <CardTitle className="text-lg">{course.title}</CardTitle>
                         <CardDescription>
-                          Créé le {new Date(course.createdDate).toLocaleDateString('fr-FR')}
+                          Créé le {new Date(course.createdAt).toLocaleDateString('fr-FR')}
                         </CardDescription>
                       </div>
                       <div className="flex space-x-2">

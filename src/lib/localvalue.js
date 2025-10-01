@@ -9,6 +9,7 @@ export const localStorageKeys = {
     startupTime: 'startupTime',
     userId: 'userId',
     userName: 'userName',
+    userToken: 'userToken',
     categoryId: 'categoryId',
     invoiceId: 'invoiceId',
     roleUser: "roleUser",

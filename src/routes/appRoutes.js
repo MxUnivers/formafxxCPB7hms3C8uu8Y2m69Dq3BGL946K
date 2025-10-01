@@ -6,103 +6,111 @@ import FormationDetail from '../pages/FormationDetail';
 import FormationEnrollment from '../pages/FormationEnrollment';
 import BookingCalendar from '../pages/BookingCalendar';
 import Payment from '../pages/Payment';
-import CreateFormation from '../pages/admin/CreateFormation';
 import Calendar from '../pages/Calendar';
-import StudentDashboard from '../pages/student/StudentDashboard';
-import AdminDashboard from '../pages/admin/AdminDashboard';
-import Login from '../pages/auth/Login';
-import Register from '../pages/auth/Register';
+import Register from '../pages/Register';
+import StudentDashboard from '../pages/StudentDashboard';
+import AdminDashboard from '../pages/AdminDashboard';
+import CreateFormation from '../pages/CreateFormation';
+import Login from '../pages/Login';         // ✅ Importe Login
 
-const appRoutes = [
-  // Public Routes
+export const appRoutes = [
+  // [0] Public Routes - Accueil
   {
     path: '/',
-    element: <Index />,
+    component: Index,
     title: 'Accueil',
     isPublic: true,
   },
+  // [1] Public Routes - Liste des formations
   {
     path: '/formations',
-    element: <Formations />,
+    component: Formations,
     title: 'Formations',
     isPublic: true,
   },
+  // [2] Public Routes - Détail d'une formation
   {
     path: '/formations/:id',
-    element: <FormationDetail />,
+    component: FormationDetail,
     title: 'Détail de la formation',
     isPublic: true,
   },
+  // [3] Private Route - S'inscrire à une formation
   {
     path: '/formations/:id/enroll',
-    element: <FormationEnrollment />,
+    component: FormationEnrollment,
     title: 'S\'inscrire à la formation',
     isPublic: false,
   },
+  // [4] Private Route - Réserver une session
   {
     path: '/formations/:id/book',
-    element: <BookingCalendar />,
+    component: BookingCalendar,
     title: 'Réserver une session',
     isPublic: false,
   },
+  // [5] Private Route - Paiement pour une formation
   {
     path: '/formations/:id/payment',
-    element: <Payment />,
+    component: Payment,
     title: 'Paiement',
     isPublic: false,
   },
+  // [6] Public Route - Calendrier des sessions
   {
     path: '/calendar',
-    element: <Calendar />,
+    component: Calendar,
     title: 'Calendrier des sessions',
     isPublic: true,
   },
 
-  // Auth Routes
+  // [7] Auth Route - Connexion
   {
     path: '/login',
-    element: <Login />,
+    component: Login,
     title: 'Connexion',
     isPublic: true,
-    layout: 'auth', // Optionnel : pour utiliser un layout spécial
+    layout: 'auth',
   },
+  // [8] Auth Route - Inscription
   {
     path: '/register',
-    element: <Register />,
+    component: Register,
     title: 'Inscription',
     isPublic: true,
     layout: 'auth',
   },
 
-  // Student Routes
+  // [9] Student Route - Dashboard étudiant
   {
     path: '/student',
-    element: <StudentDashboard />,
+    component: StudentDashboard,
     title: 'Tableau de bord Étudiant',
     isPublic: false,
     role: ['Student'],
   },
 
-  // Admin Routes
+  // [10] Admin Route - Dashboard admin
   {
     path: '/admin',
-    element: <AdminDashboard />,
+    component: AdminDashboard,
     title: 'Tableau de bord Admin',
     isPublic: false,
     role: ['Admin', 'SuperAdmin'],
   },
+  // [11] Admin Route - Créer une formation
   {
     path: '/admin/formations/create',
-    element: <CreateFormation />,
+    component: CreateFormation,
     title: 'Créer une formation',
     isPublic: false,
     role: ['Admin', 'SuperAdmin'],
   },
 
-  // Autres
+  // [12] Private Route - Page de paiement globale
   {
     path: '/payment',
-    element: <Payment />,
+    component: Payment,
     title: 'Paiement',
     isPublic: false,
   },

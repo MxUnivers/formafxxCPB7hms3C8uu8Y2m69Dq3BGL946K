@@ -4,58 +4,18 @@ import { Badge } from "@/components/ui/badge";
 import Navigation from "@/components/Navigation";
 import { Clock, Users, Star, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchFormations } from "../actions/request/FormationAction";
 
 const Formations = () => {
-  const formations = [
-    {
-      id: 1,
-      title: "React & TypeScript Masterclass",
-      description: "Maîtrisez React et TypeScript pour créer des applications web modernes et performantes.",
-      duration: "40 heures",
-      level: "Intermédiaire",
-      participants: 45,
-      rating: 4.8,
-      price: "299€",
-      tags: ["React", "TypeScript", "Frontend"],
-      image: "/placeholder.svg?height=200&width=300"
-    },
-    {
-      id: 2,
-      title: "Node.js & Express Backend",
-      description: "Développez des APIs robustes et sécurisées avec Node.js et Express.",
-      duration: "35 heures",
-      level: "Débutant",
-      participants: 32,
-      rating: 4.6,
-      price: "249€",
-      tags: ["Node.js", "Express", "Backend"],
-      image: "/placeholder.svg?height=200&width=300"
-    },
-    {
-      id: 3,
-      title: "Full Stack JavaScript",
-      description: "Formation complète pour devenir développeur full stack avec JavaScript.",
-      duration: "80 heures",
-      level: "Avancé",
-      participants: 28,
-      rating: 4.9,
-      price: "499€",
-      tags: ["JavaScript", "Full Stack", "MongoDB"],
-      image: "/placeholder.svg?height=200&width=300"
-    },
-    {
-      id: 4,
-      title: "Python pour Débutants",
-      description: "Apprenez les bases de la programmation avec Python de façon simple et efficace.",
-      duration: "25 heures",
-      level: "Débutant",
-      participants: 67,
-      rating: 4.7,
-      price: "199€",
-      tags: ["Python", "Débutant", "Algorithmes"],
-      image: "/placeholder.svg?height=200&width=300"
-    }
-  ];
+  const dispatch  =  useDispatch();
+  const {formations, loadingFormations} =  useSelector((state)=>state.formations)
+
+  useEffect(() => {
+  dispatch(fetchFormations());
+  }, [dispatch]);
+
 
   const getLevelColor = (level) => {
     switch (level) {
@@ -70,24 +30,24 @@ const Formations = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Nos Formations</h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+      <div className="container px-4 py-8 mx-auto">
+        <div className="mb-12 text-center">
+          <h1 className="mb-4 text-4xl font-bold">Nos Formations</h1>
+          <p className="max-w-2xl mx-auto text-xl text-muted-foreground">
             Découvrez nos formations complètes conçues pour vous faire progresser rapidement 
             dans le développement web et logiciel.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {formations.map((formation) => (
-            <Card key={formation.id} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-              <div className="aspect-video bg-muted rounded-t-lg mb-4 flex items-center justify-center">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {formations && formations.length > 0 && formations.map((formation) => (
+            <Card key={formation.id} className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div className="flex items-center justify-center mb-4 rounded-t-lg aspect-video bg-muted">
                 <span className="text-muted-foreground">Formation Image</span>
               </div>
               
               <CardHeader>
-                <div className="flex justify-between items-start mb-2">
+                <div className="flex items-start justify-between mb-2">
                   <Badge 
                     variant="outline" 
                     className={getLevelColor(formation.level)}
@@ -95,33 +55,32 @@ const Formations = () => {
                     {formation.level}
                   </Badge>
                   <div className="flex items-center space-x-1">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
                     <span className="text-sm font-medium">{formation.rating}</span>
                   </div>
                 </div>
                 
                 <CardTitle className="text-lg">{formation.title}</CardTitle>
-                <CardDescription>
-                  {formation.description}
-                </CardDescription>
+                <CardDescription dangerouslySetInnerHTML={{ __html: formation.description }} />
+
               </CardHeader>
               
               <CardContent>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {formation.tags.map((tag, index) => (
+                  { formation && formation.tags && formation.tags.length >0 && formation.tags.map((tag, index) => (
                     <Badge key={index} variant="secondary" className="text-xs">
                       {tag}
                     </Badge>
                   ))}
                 </div>
                 
-                <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+                <div className="flex items-center justify-between mb-4 text-sm text-muted-foreground">
                   <div className="flex items-center space-x-1">
-                    <Clock className="h-4 w-4" />
+                    <Clock className="w-4 h-4" />
                     <span>{formation.duration}</span>
                   </div>
                   <div className="flex items-center space-x-1">
-                    <Users className="h-4 w-4" />
+                    <Users className="w-4 h-4" />
                     <span>{formation.participants} étudiants</span>
                   </div>
                 </div>
@@ -131,7 +90,7 @@ const Formations = () => {
                   <Link to={`/formations/${formation.id}`}>
                     <Button>
                       En savoir plus
-                      <ArrowRight className="ml-2 h-4 w-4" />
+                      <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>
                   </Link>
                 </div>
@@ -140,8 +99,8 @@ const Formations = () => {
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <p className="text-muted-foreground mb-4">
+        <div className="mt-12 text-center">
+          <p className="mb-4 text-muted-foreground">
             Vous ne trouvez pas la formation qui vous correspond ?
           </p>
           <Button variant="outline" size="lg">
